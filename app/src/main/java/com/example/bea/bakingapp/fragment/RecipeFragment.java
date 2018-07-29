@@ -22,6 +22,7 @@ import com.example.bea.bakingapp.activities.IngredientsStepsActivity;
 import com.example.bea.bakingapp.activities.RecipeMainActivity;
 import com.example.bea.bakingapp.adapter.RecipeAdapter;
 import com.example.bea.bakingapp.data.Recipe;
+import com.example.bea.bakingapp.widget.ListProvider;
 
 import java.util.ArrayList;
 
@@ -91,4 +92,6 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.ListItemCl
     recipeArrayList = recipeOutput;
     loadRecyclerView(recipeArrayList);
     }
+
+
 }

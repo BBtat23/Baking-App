@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 import com.example.bea.bakingapp.R;
+import com.example.bea.bakingapp.data.Ingredients;
 import com.example.bea.bakingapp.data.Recipe;
 
 /**
@@ -20,7 +21,7 @@ public class ListProvider implements RemoteViewsFactory {
 	private ArrayList<ListItem> listItemList = new ArrayList<ListItem>();
 	private Context context = null;
 	private int appWidgetId;
-	private ArrayList<Recipe> mRecipes;
+	private ArrayList<Ingredients> mIngredients;
 		    String contentItemString = "";
 		    StringBuilder builder = new StringBuilder();
 
@@ -36,12 +37,13 @@ public class ListProvider implements RemoteViewsFactory {
 		Recipe recipe = new Recipe();
 		Log.d("ListProvider", "recipes" + recipe.getName());
 		String recipeName = recipe.getName();
-		ListItem listItem = new ListItem();
-		String[] contentString = listItem.contentString;
-		for (String contentItem : contentString) {
-			builder.append("- " + contentItem + "\n");
+		ArrayList<Ingredients> ingredients= recipe.getIngredientsArrayList();
+		for (Ingredients ingredient : ingredients){
+			contentItemString = String.valueOf(builder.append("- " + ingredient + "\n"));
 		}
+		ListItem listItem = new ListItem();
 		listItem.heading = recipeName;
+		listItem.content = contentItemString;
 //    for (int i = 0; i < 10; i++) {
 //    ListItem listItem = new ListItem();
 //    listItem.heading = "Heading" + i;
@@ -49,7 +51,6 @@ public class ListProvider implements RemoteViewsFactory {
 //    + " This is the content of the app widget listview.Nice content though";
 		listItemList.add(listItem);
 	}
-
 
 	@Override
 	public int getCount() {
@@ -96,6 +97,10 @@ public class ListProvider implements RemoteViewsFactory {
 
 	@Override
 	public void onCreate() {
+		RemoteViews views = new RemoteViews(
+				context.getPackageName(), R.layout.widget_layout);
+		Intent intent = new Intent(context, ListProvider.class);
+		views.setRemoteAdapter(R.id.listViewWidget, intent);
 	}
 
 	@Override

@@ -71,8 +71,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         shortDescriptionTextView = (TextView) rootView.findViewById(R.id.step_short_description);
         descriptionTextView = (TextView) rootView.findViewById(R.id.step_description);
         mImageView = (ImageView) rootView.findViewById(R.id.step_image);
-        nextButton = (Button) rootView.findViewById(R.id.next_Button);
-        previousButton = (Button) rootView.findViewById(R.id.previous_Button);
         // Initialize the player view.
         playerView = (SimpleExoPlayerView) rootView.findViewById(R.id.step_video);
 
@@ -138,36 +136,36 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                 .into(mImageView);
     }
 
-    @OnClick (R.id.next_Button)
-    void nextButton(){
-        if (position > stepsArrayList.size() - 1) {
-            if (nextButton.isEnabled()) nextButton.setEnabled(false);
-        }else {
-            position++;
-
-            if (!previousButton.isEnabled()) previousButton.setEnabled(true);
-
-            steps = stepsArrayList.get(position);
-            releasePlayer();
-            setDataPhone(steps);
-            setDataTablet(stepsArrayList);
-        }
-    }
-
-    @OnClick (R.id.previous_Button)
-    void previousButton(){
-        if (position == 0) {
-            if (previousButton.isEnabled()) previousButton.setEnabled(false);
-        }else {
-            position--;
-
-            if (!nextButton.isEnabled()) nextButton.setEnabled(true);
-            steps = stepsArrayList.get(position);
-            releasePlayer();
-            setDataPhone(steps);
-            setDataTablet(stepsArrayList);
-        }
-    }
+//    @OnClick (R.id.next_Button)
+//    void nextButton(){
+//        if (position > stepsArrayList.size() - 1) {
+//            if (nextButton.isEnabled()) nextButton.setEnabled(false);
+//        }else {
+//            position++;
+//
+//            if (!previousButton.isEnabled()) previousButton.setEnabled(true);
+//
+//            steps = stepsArrayList.get(position);
+//            releasePlayer();
+//            setDataPhone(steps);
+//            setDataTablet(stepsArrayList);
+//        }
+//    }
+//
+//    @OnClick (R.id.previous_Button)
+//    void previousButton(){
+//        if (position == 0) {
+//            if (previousButton.isEnabled()) previousButton.setEnabled(false);
+//        }else {
+//            position--;
+//
+//            if (!nextButton.isEnabled()) nextButton.setEnabled(true);
+//            steps = stepsArrayList.get(position);
+//            releasePlayer();
+//            setDataPhone(steps);
+//            setDataTablet(stepsArrayList);
+//        }
+//    }
 
     @Override
     public void onPause() {

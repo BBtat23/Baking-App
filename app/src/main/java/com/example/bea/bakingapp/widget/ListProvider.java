@@ -73,8 +73,8 @@ public class ListProvider implements RemoteViewsFactory {
 				context.getPackageName(), R.layout.list_row);
 		ListItem listItem = listItemList.get(position);
 //		remoteView.setTextViewText(R.id.heading, listItem.heading);
-		remoteView.setTextViewText(R.id.content, builder.toString());
-		remoteView.setTextViewText(R.id.heading, listItem.heading);
+//		remoteView.setTextViewText(R.id.content, builder.toString());
+//		remoteView.setTextViewText(R.id.heading, listItem.heading);
 
 		return remoteView;
 	}
@@ -100,7 +100,7 @@ public class ListProvider implements RemoteViewsFactory {
 		RemoteViews views = new RemoteViews(
 				context.getPackageName(), R.layout.widget_layout);
 		Intent intent = new Intent(context, ListProvider.class);
-		views.setRemoteAdapter(R.id.listViewWidget, intent);
+//		views.setRemoteAdapter(R.id.listViewWidget, intent);
 	}
 
 	@Override

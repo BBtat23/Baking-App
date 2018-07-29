@@ -3,6 +3,7 @@ package com.example.bea.bakingapp.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -60,6 +61,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView playerView;
     private PlaybackStateCompat.Builder mStateBuilder;
+    long positionPlayer;
+    boolean playWhenReady;
+    private static final String EXTRA_EXO_PLAYER_POSITION = "extra_exo_player_position";
+
 
     public StepsDetailFragment() {
     }
@@ -74,17 +79,18 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         // Initialize the player view.
         playerView = (SimpleExoPlayerView) rootView.findViewById(R.id.step_video);
 
+        if (savedInstanceState != null) {
+            stepsArrayList = savedInstanceState.getParcelableArrayList(RecipeFragment.RECIPE_LIST);
+            position = savedInstanceState.getInt(RecipeFragment.POSITION);
+            positionPlayer = savedInstanceState.getLong(EXTRA_EXO_PLAYER_POSITION);
+        }
+
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (savedInstanceState != null) {
-            stepsArrayList = savedInstanceState.getParcelableArrayList(RecipeFragment.RECIPE_LIST);
-            position = savedInstanceState.getInt(RecipeFragment.POSITION);
-        }
 
         if (!RecipeMainActivity.twoPane) {
             stepsArrayList = getActivity().getIntent().getParcelableArrayListExtra(RecipeFragment.RECIPE_LIST);
@@ -136,7 +142,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                 .into(mImageView);
     }
 
-//    @OnClick (R.id.next_Button)
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(EXTRA_EXO_PLAYER_POSITION,positionPlayer);
+    }
+    //    @OnClick (R.id.next_Button)
 //    void nextButton(){
 //        if (position > stepsArrayList.size() - 1) {
 //            if (nextButton.isEnabled()) nextButton.setEnabled(false);
@@ -171,6 +182,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onPause() {
         super.onPause();
         releasePlayer();
+        position = exoPlayer != null ? (int) exoPlayer.getCurrentPosition() : 0;
     }
     /**
      * Release ExoPlayer.
@@ -180,6 +192,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         exoPlayer.stop();
         exoPlayer.release();
         exoPlayer = null;
+//        exoPlayer.setPlayWhenReady(false);
         }
         if (mediaSession != null){
             mediaSession.setActive(false);

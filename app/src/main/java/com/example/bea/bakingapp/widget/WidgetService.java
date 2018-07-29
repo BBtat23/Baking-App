@@ -2,7 +2,13 @@ package com.example.bea.bakingapp.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.widget.RemoteViewsService;
+
+import com.example.bea.bakingapp.activities.RecipeMainActivity;
+import com.example.bea.bakingapp.fragment.RecipeFragment;
 
 public class WidgetService extends RemoteViewsService {
 	/*

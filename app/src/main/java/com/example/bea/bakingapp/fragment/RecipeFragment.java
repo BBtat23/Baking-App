@@ -92,6 +92,4 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.ListItemCl
     recipeArrayList = recipeOutput;
     loadRecyclerView(recipeArrayList);
     }
-
-
 }

@@ -2,8 +2,6 @@ package com.example.bea.bakingapp.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -41,8 +39,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.OnClick;
-
 import static android.support.constraint.Constraints.TAG;
 
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener {
@@ -61,9 +57,16 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView playerView;
     private PlaybackStateCompat.Builder mStateBuilder;
-    long positionPlayer;
-    boolean playWhenReady;
-    private static final String EXTRA_EXO_PLAYER_POSITION = "extra_exo_player_position";
+    private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
+    private static final String KEY_WINDOW = "window";
+    private static final String KEY_POSITION = "position";
+    private static final String KEY_AUTO_PLAY = "auto_play";
+
+    private boolean startAutoPlay;
+    private int startWindow;
+    private long startPosition;
+    private DefaultTrackSelector trackSelector;
+    private DefaultTrackSelector.Parameters trackSelectorParameters;
 
 
     public StepsDetailFragment() {
@@ -82,7 +85,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         if (savedInstanceState != null) {
             stepsArrayList = savedInstanceState.getParcelableArrayList(RecipeFragment.RECIPE_LIST);
             position = savedInstanceState.getInt(RecipeFragment.POSITION);
-            positionPlayer = savedInstanceState.getLong(EXTRA_EXO_PLAYER_POSITION);
+            trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
+            startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
+            startWindow = savedInstanceState.getInt(KEY_WINDOW);
+            startPosition = savedInstanceState.getLong(KEY_POSITION);
         }
 
         return rootView;
@@ -145,7 +151,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(EXTRA_EXO_PLAYER_POSITION,positionPlayer);
+        updateTrackSelectorParameters();
+        updateStartPosition();
+        outState.putBoolean(KEY_AUTO_PLAY, startAutoPlay);
+        outState.putInt(KEY_WINDOW, startWindow);
+        outState.putLong(KEY_POSITION, startPosition);
+
     }
     //    @OnClick (R.id.next_Button)
 //    void nextButton(){
@@ -177,6 +188,25 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 //            setDataTablet(stepsArrayList);
 //        }
 //    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+
+            Uri videoURL = Uri.parse(steps.getVideoURL());
+            initializePlayer(videoURL);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Util.SDK_INT <= 23 || exoPlayer == null) {
+            Uri videoURL = Uri.parse(steps.getVideoURL());
+            initializePlayer(videoURL);
+        }
+    }
 
     @Override
     public void onPause() {
@@ -331,4 +361,18 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                 exoPlayer.seekTo(0);
             }
         }
+
+    private void updateTrackSelectorParameters() {
+        if (trackSelector != null) {
+            trackSelectorParameters = trackSelector.getParameters();
+        }
+    }
+
+    private void updateStartPosition() {
+        if (exoPlayer != null) {
+            startAutoPlay = exoPlayer.getPlayWhenReady();
+            startWindow = exoPlayer.getCurrentWindowIndex();
+            startPosition = Math.max(0, exoPlayer.getCurrentPosition());
+        }
+    }
     }

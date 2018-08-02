@@ -1,7 +1,6 @@
 package com.example.bea.bakingapp.fragment;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,18 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.bea.bakingapp.AsyncResponse;
 import com.example.bea.bakingapp.R;
 import com.example.bea.bakingapp.RecipeAsyncTask;
 import com.example.bea.bakingapp.activities.IngredientsStepsActivity;
-import com.example.bea.bakingapp.activities.RecipeMainActivity;
 import com.example.bea.bakingapp.adapter.RecipeAdapter;
 import com.example.bea.bakingapp.data.Recipe;
-import com.example.bea.bakingapp.widget.ListProvider;
 
 import java.util.ArrayList;
 
@@ -46,6 +40,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.ListItemCl
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recipe_recycler_view);
         return rootView;
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

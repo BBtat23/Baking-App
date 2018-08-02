@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".activities.IngredientsStepsActivity"></activity>
         <activity android:name=".activities.StepsActivity"></activity>
-        <receiver android:name=".widget.WidgetProvider" >
+        <receiver android:name=".widget.Provider" >
             <intent-filter>
 
                 <!-- This widget provider receives broadcast with following action name or simply onUpdate of AppWidgetProvider is called -->
@@ -35,7 +35,7 @@
         </receiver>
 
         <service
-            android:name=".widget.WidgetService"
+            android:name=".widget.MyWidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 

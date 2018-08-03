@@ -59,8 +59,8 @@ public class Provider extends AppWidgetProvider {
 
         List<Recipe> recipes = new GsonBuilder().create().fromJson(json, type);
 
-        Recipe recipe = recipes.get(0);
-        String sRecipe = new GsonBuilder().create().toJson(recipe);
+//        Recipe recipe = recipes.get(0);
+        String sRecipe = new GsonBuilder().create().toJson(recipes);
 
         intent.putExtra(WidgetDataProvider.SELECTED_RECIPE, sRecipe);
         mView.setRemoteAdapter(widgetId, R.id.widget_list_view, intent);

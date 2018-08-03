@@ -25,7 +25,7 @@ public class Recipe implements Parcelable {
     public Recipe(Parcel in){
         readFromParcel(in);
     }
-
+    @SuppressWarnings("unused")
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel in) {

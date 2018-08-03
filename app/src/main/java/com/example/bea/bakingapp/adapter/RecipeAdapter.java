@@ -31,9 +31,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         void onListItemClick(int clickedItemIndex);
     }
 
-    public RecipeAdapter(List listRecipe, ListItemClickListener listener){
+    public RecipeAdapter(Context context,List listRecipe, ListItemClickListener listener){
         this.mRecipeData = listRecipe;
         this.mOnclicklistener = listener;
+        this.mContext = context;
     }
     @NonNull
     @Override
@@ -85,6 +86,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                         editor.putString(SHARED_PREFS_KEY,json).commit();
 
                         Intent widgetIntent = new Intent(mContext, WidgetDataProvider.class);
+                        mOnclicklistener.onListItemClick(pos);
                         widgetIntent.setAction("android.appwidget.action.APPWIDGET_UPDATE\\");
                     }
                 }

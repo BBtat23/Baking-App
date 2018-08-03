@@ -63,7 +63,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.ListItemCl
     public void loadRecyclerView(ArrayList<Recipe> recipeArrayList){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new RecipeAdapter(recipeArrayList,this);
+        mAdapter = new RecipeAdapter(getContext(),recipeArrayList,this);
         recyclerView.setAdapter(mAdapter);
     }
     @Override

@@ -211,8 +211,17 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onPause() {
         super.onPause();
-        releasePlayer();
-        position = exoPlayer != null ? (int) exoPlayer.getCurrentPosition() : 0;
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
     }
     /**
      * Release ExoPlayer.

@@ -13,11 +13,15 @@ import android.widget.RemoteViews;
 
 import com.example.bea.bakingapp.R;
 import com.example.bea.bakingapp.adapter.RecipeAdapter;
+import com.example.bea.bakingapp.data.Ingredients;
 import com.example.bea.bakingapp.data.Recipe;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,6 +30,8 @@ import java.util.List;
 
 public class Provider extends AppWidgetProvider {
 
+    Gson gson;
+    private ArrayList<Recipe> mRecipe;
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
@@ -53,16 +59,16 @@ public class Provider extends AppWidgetProvider {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String json = preferences.getString(RecipeAdapter.SHARED_PREFS_KEY, "");
+        gson = new Gson();
 
+//        Ingredients[] ingredients = gson.fromJson(json,Ingredients[].class);
         Type type = new TypeToken<List<Recipe>>(){}.getType();
 
-
-        List<Recipe> recipes = new GsonBuilder().create().fromJson(json, type);
-
-//        Recipe recipe = recipes.get(0);
-        String sRecipe = new GsonBuilder().create().toJson(recipes);
-
-        intent.putExtra(WidgetDataProvider.SELECTED_RECIPE, sRecipe);
+        List<Recipe> recipeList = new GsonBuilder().create().fromJson(json, type);
+//
+////        Recipe recipe = recipes.get(0);
+//
+        intent.putExtra(WidgetDataProvider.SELECTED_RECIPE, String.valueOf(recipeList));
         mView.setRemoteAdapter(widgetId, R.id.widget_list_view, intent);
 
         return mView;

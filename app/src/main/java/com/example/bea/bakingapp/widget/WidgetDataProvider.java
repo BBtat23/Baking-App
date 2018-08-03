@@ -22,7 +22,8 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
 	private Context context;
 	private Intent intent;
-	private List<Ingredients> ingredientList = new ArrayList<>();
+	private List<Recipe> recipeList = new ArrayList<>();
+	private List<Ingredients> ingredientsList = new ArrayList<>();
 
 	public WidgetDataProvider(Context context, Intent intent){
 		this.context = context;
@@ -32,7 +33,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 	void initData(){
 		String sRecipe = intent.getStringExtra(SELECTED_RECIPE);
 		Recipe recipe = new GsonBuilder().create().fromJson(sRecipe, Recipe.class);
-		ingredientList.addAll(recipe.getIngredientsArrayList());
+		ingredientsList = recipe.getIngredientsArrayList();
 	}
 
 	@Override
@@ -50,12 +51,12 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
 	@Override
 	public int getCount() {
-		return ingredientList.size();
+		return ingredientsList.size();
 	}
 
 	@Override
 	public RemoteViews getViewAt(int position) {
-		Ingredients ingredient = ingredientList.get(position);
+		Ingredients ingredient = ingredientsList.get(position);
 		RemoteViews views = new RemoteViews(context.getPackageName(), android.R.layout.simple_list_item_1);
 		//
 		// views.setTextViewText(android.R.id.text1, String.format(context.getString(R.string.ingredients_detail)
